@@ -1,70 +1,16 @@
-const input = document.getElementById("todoInput");
-const button = document.getElementById("addBtn");
-const list = document.getElementById("todoList");
+function addTask(){
 
-document.addEventListener("DOMContentLoaded", loadTodos);
+let input = document.getElementById("task")
+let text = input.value
 
-button.addEventListener("click", addTodo);
+if(text == "") return
 
-function addTodo() {
-    const text = input.value.trim();
-    if (text === "") return;
+let li = document.createElement("li")
+li.innerText = text
 
-    const todo = {
-        text: text,
-        completed: false
-    };
+let list = document.getElementById("list")
+list.appendChild(li)
 
-    createTodoElement(todo);
-    saveTodo(todo);
+input.value = ""
 
-    input.value = "";
-}
-
-function createTodoElement(todo) {
-    const li = document.createElement("li");
-    li.textContent = todo.text;
-
-    if (todo.completed) {
-        li.classList.add("completed");
-    }
-
-    li.addEventListener("click", () => {
-        li.classList.toggle("completed");
-        updateStorage();
-    });
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "X";
-
-    deleteBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        li.remove();
-        updateStorage();
-    });
-
-    li.appendChild(deleteBtn);
-    list.appendChild(li);
-}
-
-function saveTodo(todo) {
-    const todos = JSON.parse(localStorage.getItem("todos")) || [];
-    todos.push(todo);
-    localStorage.setItem("todos", JSON.stringify(todos));
-}
-
-function loadTodos() {
-    const todos = JSON.parse(localStorage.getItem("todos")) || [];
-    todos.forEach(createTodoElement);
-}
-
-function updateStorage() {
-    const todos = [];
-    document.querySelectorAll("li").forEach(li => {
-        todos.push({
-            text: li.firstChild.textContent,
-            completed: li.classList.contains("completed")
-        });
-    });
-    localStorage.setItem("todos", JSON.stringify(todos));
 }
